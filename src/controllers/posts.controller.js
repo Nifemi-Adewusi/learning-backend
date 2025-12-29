@@ -62,4 +62,23 @@ const updatePosts = async (req, res) => {
     res.status(500).json({ message: "Failed To Update Post" });
   }
 };
-export { createPost, getPosts, updatePosts };
+
+const deletePosts = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    return res.status(200).json({
+      message: "Post deleted successfully",
+      post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete post" });
+  }
+};
+
+export { createPost, getPosts, updatePosts, deletePosts };
