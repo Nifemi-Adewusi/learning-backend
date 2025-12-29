@@ -41,4 +41,25 @@ const getPosts = async (_, res) => {
     res.status(500).json({ message: "Failed To Create Post" });
   }
 };
-export { createPost, getPosts };
+
+const updatePosts = async (req, res) => {
+  try {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "No Data Provided For Update" });
+    }
+    const posts = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!posts) {
+      return res.status(404).json({ message: "Post Not Found" });
+    }
+    return res.status(200).json({
+      message: "Post Updated Successfully",
+      posts,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed To Update Post" });
+  }
+};
+export { createPost, getPosts, updatePosts };
