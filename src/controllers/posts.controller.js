@@ -32,4 +32,13 @@ const createPost = async (req, res) => {
   }
 };
 
-export { createPost };
+const getPosts = async (_, res) => {
+  try {
+    const posts = await Post.find();
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed To Create Post" });
+  }
+};
+export { createPost, getPosts };
